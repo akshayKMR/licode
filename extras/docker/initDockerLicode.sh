@@ -14,8 +14,8 @@ parse_arguments(){
     RABBITMQ=true
     NUVE=true
     ERIZOCONTROLLER=true
-    ERIZOAGENT=true
-    BASICEXAMPLE=true
+    ERIZOAGENT=false
+    BASICEXAMPLE=false
     ERIZODEBUG=false
 
   else
