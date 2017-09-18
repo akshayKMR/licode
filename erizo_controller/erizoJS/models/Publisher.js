@@ -54,7 +54,13 @@ class Source {
               'id: ' + wrtcId + ', scheme: ' + this.scheme+
                ', ' + logger.objectToLog(options.metadata));
     wrtc.scheme = this.scheme;
-    this.muteSubscriberStream(id, false, false);
+    const muteVideo = (options.muteStream && options.muteStream.video) || false;
+    const muteAudio = (options.muteStream && options.muteStream.audio) || false;
+    this.muteSubscriberStream(id, muteVideo, muteAudio);
+    if (options.video) {
+      this.setVideoConstraints(id,
+        options.video.width, options.video.height, options.video.frameRate);
+    }
   }
 
   removeSubscriber(id) {
@@ -123,6 +129,14 @@ class Source {
                           this.muteAudio || muteAudio);
   }
 
+  setVideoConstraints(id, width, height, frameRate) {
+    var subscriber = this.getSubscriber(id);
+    var maxWidth = (width && width.max) || -1;
+    var maxHeight = (height && height.max) || -1;
+    var maxFrameRate = (frameRate && frameRate.max) || -1;
+    subscriber.setVideoConstraints(maxWidth, maxHeight, maxFrameRate);
+  }
+
   enableHandlers(id, handlers) {
     var wrtc = this.wrtc;
     if (id) {
@@ -160,6 +174,9 @@ class Publisher extends Source {
     this.wrtc.setAudioReceiver(this.muxer);
     this.wrtc.setVideoReceiver(this.muxer);
     this.muxer.setPublisher(this.wrtc);
+    const muteVideo = (options.muteStream && options.muteStream.video) || false;
+    const muteAudio = (options.muteStream && options.muteStream.audio) || false;
+    this.muteStream(muteVideo, muteAudio);
   }
 
   resetWrtc() {
