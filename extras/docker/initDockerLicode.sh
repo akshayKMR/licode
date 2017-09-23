@@ -164,6 +164,8 @@ fi
 if [ "$ERIZOCONTROLLER" == "true" ]; then
   echo "config.erizoController.hostname = '$ERIZO_HOSTNAME';" >> /opt/licode/licode_config.js
   echo "config.erizoController.publicIP = '$PUBLIC_IP';" >> /opt/licode/licode_config.js
+  echo "config.erizoController.ssl  = $ERIZO_SSL;" >> /opt/licode/licode_config.js
+  echo "config.erizoController.port = $ERIZO_PORT;" >> /opt/licode/licode_config.js
   run_erizoController
 fi
 
